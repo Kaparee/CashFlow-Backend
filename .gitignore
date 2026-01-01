@@ -1,0 +1,42 @@
+## Visual Studio Temp Files
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.userosscache
+*.sln.docstates
+
+## .NET Core / .NET 5+ Temp Files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+secrets.json
+.microsoft.dotnet.usersecrets/
+
+## SQL Server / Database Files
+*.mdf
+*.ldf
+*.sdf
+
+## IDE - Rider / JetBrains
+.idea/
+*.sln.iml
+
+## IDE - VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## OS Temp Files
+.DS_Store
+Thumbs.db
+
+## Publishing
+publish/
+*.publishsettings
+
+## Logs
+*.log
