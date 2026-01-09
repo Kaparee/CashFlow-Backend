@@ -27,7 +27,7 @@ namespace CashFlow.Api.Controllers
 
         [HttpGet]
         [Route("transactions-info")]
-        public async Task<ActionResult<TransactionResponse>> GetAccountTransaction(int accountId)
+        public async Task<ActionResult<TransactionResponse>> GetAccountTransactions(int accountId)
         {
             var transactionDto = await _transactionService.GetAccountTransactionsAsync(CurrentUserId, accountId);
             return Ok(transactionDto);

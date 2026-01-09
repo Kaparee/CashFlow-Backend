@@ -3,7 +3,6 @@ using CashFlow.Application.Repositories;
 using CashFlow.Domain.Models;
 using CashFlow.Application.DTO.Requests;
 using CashFlow.Application.DTO.Responses;
-using BCrypt.Net;
 
 namespace CashFlow.Application.Services
 {

@@ -51,5 +51,7 @@ namespace CashFlow.Domain.Models
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 
         public ICollection<RecTransaction> RecTransactions { get; set; } = new List<RecTransaction>();
+
+        public  ICollection<Limit> Limits { get; set; } = new List<Limit>();
     }
 }

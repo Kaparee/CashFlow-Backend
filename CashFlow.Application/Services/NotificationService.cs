@@ -41,18 +41,16 @@ namespace CashFlow.Application.Services
             };
 
             await _notificationRepository.AddAsync(notification);
-
-            try
-            {
-                await _emailService.SendEmailAsync(user.Email, subject, message);
-            } catch (Exception)
-            {
-            }
         }
 
         public async Task<List<NotificationResponse>> GetUserNotificationsAsync(int userId)
         {
             var notifications = await _notificationRepository.GetUserNotificationsWithDetailsAsync(userId);
+
+            if (notifications == null)
+            {
+                throw new Exception("Notification does not exist or is not your");
+            }
 
             return notifications.Select(n => new NotificationResponse
             {

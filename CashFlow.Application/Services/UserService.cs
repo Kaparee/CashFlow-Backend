@@ -338,6 +338,7 @@ namespace CashFlow.Application.Services
             user.EmailChangeTokenExpiresAt = null;
             user.UpdatedAt = DateTime.UtcNow;
 
+            await _emailService.SendEmailAsync(user.Email, "Email Changed - CashFlow", "<h1>Your Email has been changed, thank you for supporting our project</h1>");
             await _userRepository.UpdateAsync(user);
         }
     }

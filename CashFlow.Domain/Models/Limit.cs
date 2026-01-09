@@ -41,11 +41,11 @@ namespace CashFlow.Domain.Models
         public DateTime? UpdatedAt { get; set; }
 
         [Column("account_id")]
-        public int? AccountId { get; set; }
+        public int AccountId { get; set; }
 
         public Category Category { get; set; } = null!;
 
-        public Account? Account { get; set; }
+        public Account Account { get; set; } = null!;
 
     }
 }
