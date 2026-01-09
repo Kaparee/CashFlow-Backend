@@ -9,5 +9,6 @@ namespace CashFlow.Application.Repositories
         Task AddAsync(Limit limit);
         Task UpdateAsync(Limit limit);
         Task<List<Limit>> GetUserLimitsAsync(int userId);
+        Task<List<Limit>> GetLimitsByAccountIdAsync(int accountId);
     }
 }

@@ -50,17 +50,3 @@ namespace CashFlow.Domain.Models
         public ICollection<Limit> Limits { get; set; } = new List<Limit>();
     }
 }
-
-
-//CREATE TABLE Categories (
-//    category_id SERIAL PRIMARY KEY,
-//    user_id INTEGER REFERENCES Users(user_id),
-//    name VARCHAR(50) NOT NULL,
-//    color VARCHAR(20) DEFAULT '#808080',
-//    icon VARCHAR(50),
-//    type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
-//    limit_amount NUMERIC(10, 2),
-//    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    deleted_at TIMESTAMP
-//);

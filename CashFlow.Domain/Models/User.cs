@@ -85,20 +85,3 @@ namespace CashFlow.Domain.Models
         public ICollection<RecTransaction> RecTransactions { get; set; } = new List<RecTransaction>();
     }
 }
-
-
-//CREATE TABLE Users (
-//    user_id SERIAL PRIMARY KEY,
-//    first_name VARCHAR(50) NOT NULL,
-//    last_name VARCHAR(50) NOT NULL,
-//    nickname VARCHAR(50) NOT NULL,
-//    email VARCHAR(100) NOT NULL UNIQUE,
-//    password_hash VARCHAR(255) NOT NULL,
-//    is_verified BOOLEAN DEFAULT FALSE,
-//    is_active BOOLEAN NOT NULL DEFAULT TRUE,
-//    is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-//    photo_url VARCHAR(255) DEFAULT 'default_user_url',
-//    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    deleted_at TIMESTAMP
-//);

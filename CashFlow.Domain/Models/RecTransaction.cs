@@ -69,22 +69,3 @@ namespace CashFlow.Domain.Models
         public Category Category { get; set; } = null!;
     }
 }
-
-
-//CREATE TABLE Rec_Transaction (
-//    rec_transaction_id SERIAL PRIMARY KEY,
-//    type VARCHAR(20) NOT NULL,
-//    name VARCHAR(50) NOT NULL,
-//    frequency VARCHAR(20) NOT NULL,
-//    is_true BOOLEAN NOT NULL DEFAULT TRUE,
-//    start_date DATE NOT NULL DEFAULT CURRENT_DATE,
-//    end_date DATE,
-//    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-//    account_id INTEGER NOT NULL REFERENCES Accounts(account_id),
-//    category_id INTEGER NOT NULL REFERENCES Categories(category_id),
-//    amount NUMERIC(10, 2) NOT NULL,
-//    description TEXT,
-//    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    deleted_at TIMESTAMP
-//);

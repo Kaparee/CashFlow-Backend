@@ -44,7 +44,11 @@ namespace CashFlow.Api.Controllers
             }
             catch (Exception ex)
             {
-                if(ex.Message.Contains("must be greater than 0"))
+                if (ex.Message.Contains("must be greater than 0"))
+                {
+                    return Conflict(new { message = ex.Message });
+                }
+                if (ex.Message.Contains("is required to"))
                 {
                     return Conflict(new { message = ex.Message });
                 }

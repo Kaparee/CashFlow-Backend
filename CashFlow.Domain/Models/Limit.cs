@@ -40,20 +40,12 @@ namespace CashFlow.Domain.Models
         [Column("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 
+        [Column("account_id")]
+        public int? AccountId { get; set; }
+
         public Category Category { get; set; } = null!;
+
+        public Account? Account { get; set; }
 
     }
 }
-
-
-//CREATE TABLE Limits (
-//    limit_id SERIAL PRIMARY KEY,
-//    category_id INTEGER NOT NULL REFERENCES Categories(category_id),
-//    name VARCHAR(50) NOT NULL,
-//    value NUMERIC(10, 2) NOT NULL,
-//    description TEXT,
-//    start_date DATE NOT NULL,
-//    end_date DATE NOT NULL,
-//    CONSTRAINT check_dates CHECK (end_date >= start_date),
-//    deleted_at TIMESTAMP
-//);

@@ -30,12 +30,3 @@ namespace CashFlow.Domain.Models
         public ICollection<Account> Accounts { get; set; } = new List<Account>();
     }
 }
-
-//CREATE TABLE Currencies (
-//    currency_code VARCHAR(10) PRIMARY KEY,   -- np. PLN, USD, EUR
-//    name VARCHAR(50) NOT NULL,
-//    symbol VARCHAR(10),
-//    rate_to_base NUMERIC(12, 6),
-//    base_currency VARCHAR(10) DEFAULT 'PLN',
-//    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-//);

@@ -49,5 +49,12 @@ namespace CashFlow.Infrastructure.Repositories
                 .Where(l => l.Category.UserId == userId && l.DeletedAt == null)
                 .ToListAsync();
         }
+
+        public async Task<List<Limit>> GetLimitsByAccountIdAsync(int accountId)
+        {
+            return await _context.Limits
+                .Where(l => l.AccountId == accountId && l.DeletedAt == null)
+                .ToListAsync();
+        }
     }
 }

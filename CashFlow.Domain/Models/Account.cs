@@ -53,17 +53,3 @@ namespace CashFlow.Domain.Models
         public ICollection<RecTransaction> RecTransactions { get; set; } = new List<RecTransaction>();
     }
 }
-
-
-//CREATE TABLE Accounts (
-//    account_id SERIAL PRIMARY KEY,
-//    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-//    name VARCHAR(50) NOT NULL,
-//    balance NUMERIC(10, 2) DEFAULT 0.00,
-//    currency_code VARCHAR(10) NOT NULL REFERENCES Currencies(currency_code),
-//    is_active BOOLEAN NOT NULL DEFAULT TRUE,
-//    photo_url VARCHAR(255) DEFAULT 'default_account_url',
-//    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    deleted_at TIMESTAMP
-//);

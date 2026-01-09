@@ -53,17 +53,3 @@ namespace CashFlow.Domain.Models
         public Category Category { get; set; } = null!;
     }
 }
-
-//CREATE TABLE Transactions (
-//    transaction_id SERIAL PRIMARY KEY,
-//    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-//    account_id INTEGER NOT NULL REFERENCES Accounts(account_id),
-//    category_id INTEGER REFERENCES Categories(category_id),
-//    amount NUMERIC(10, 2) NOT NULL,
-//    description TEXT,
-//    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
-//    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    deleted_at TIMESTAMP
-//);

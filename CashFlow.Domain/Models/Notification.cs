@@ -42,16 +42,3 @@ namespace CashFlow.Domain.Models
         public User User { get; set; } = null!;
     }
 }
-
-
-//CREATE TABLE Notifications (
-//    notification_id SERIAL PRIMARY KEY,
-//    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-//    email VARCHAR(100) NOT NULL,
-//    subject VARCHAR(150) NOT NULL,
-//    body TEXT NOT NULL,
-//    type VARCHAR(30) DEFAULT 'info',
-//    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//    status VARCHAR(20) DEFAULT 'sent',
-//    deleted_at TIMESTAMP
-//);

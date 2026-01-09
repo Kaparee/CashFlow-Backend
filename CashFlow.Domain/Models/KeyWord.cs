@@ -34,13 +34,3 @@ namespace CashFlow.Domain.Models
         public Category Category { get; set; } = null!;
     }
 }
-
-
-//CREATE TABLE Key_words (
-//    word_id SERIAL PRIMARY KEY,
-//    user_id INTEGER NOT NULL REFERENCES Users(user_id),
-//    category_id INTEGER NOT NULL REFERENCES Categories(category_id),
-//    word VARCHAR(50) NOT NULL,
-//    UNIQUE (user_id, word),
-//    deleted_at TIMESTAMP
-//);

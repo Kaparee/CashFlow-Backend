@@ -12,12 +12,14 @@ namespace CashFlow.Application.Services
         private readonly IAccountRepository _accountRepository;
         private readonly ITransactionRepository _transactionRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILimitRepository _limitRepository;
 
-        public AccountService(IAccountRepository accountRepository, ITransactionRepository transactionRepository, IUnitOfWork unitOfWork)
+        public AccountService(IAccountRepository accountRepository, ITransactionRepository transactionRepository, IUnitOfWork unitOfWork, ILimitRepository limitRepository)
         {
             _accountRepository = accountRepository;
             _transactionRepository = transactionRepository;
             _unitOfWork = unitOfWork;
+            _limitRepository = limitRepository;
         }
 
         public async Task<List<AccountResponse>> GetUserAccountsAsync(int userId)
@@ -69,6 +71,7 @@ namespace CashFlow.Application.Services
             {
                 var account = await _accountRepository.GetAccountByIdAsync(userId, accountId);
                 var transactions = await _transactionRepository.GetAccountTransactionsWithDetailsAsync(userId, accountId);
+                var limits = await _limitRepository.GetLimitsByAccountIdAsync(accountId);
 
                 if (account == null)
                 {
@@ -81,6 +84,12 @@ namespace CashFlow.Application.Services
                 foreach (var transaction in transactions)
                 {
                     transaction.DeletedAt = DateTime.UtcNow;
+                }
+
+                foreach (var limit in limits)
+                {
+                    limit.DeletedAt = DateTime.UtcNow;
+                    await _limitRepository.UpdateAsync(limit);
                 }
 
                 await _accountRepository.UpdateAsync(account);
