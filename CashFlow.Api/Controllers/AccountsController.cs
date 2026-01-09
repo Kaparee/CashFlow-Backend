@@ -101,5 +101,20 @@ namespace CashFlow.Api.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        [Route("total-balance")]
+        public async Task<ActionResult<decimal>> GetUserTotalBalance([FromQuery] string currency = "PLN")
+        {
+            try
+            {
+                var total = await _accountService.GetTotalBalanceAsync(CurrentUserId, currency);
+                return Ok(new { currency = currency, totalBalance = total });
+            }
+            catch(Exception ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
+        }
     }
 }

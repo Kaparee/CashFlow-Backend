@@ -6,5 +6,6 @@ namespace CashFlow.Application.Interfaces
 	{
 		Task<List<CurrencyResponse>> GetAllCurrenciesAsync();
 		Task SyncRatesAsync();
+        Task<decimal> GetExchangeRateAsync(string fromCurrencyCode, string toCurrencyCode);
     }
 }

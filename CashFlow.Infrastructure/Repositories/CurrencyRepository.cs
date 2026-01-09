@@ -35,5 +35,11 @@ namespace CashFlow.Infrastructure.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Currency?> GetCurrencyByCodeAsync(string code)
+        {
+            return await _context.Currencies
+                .FirstOrDefaultAsync(c => c.CurrencyCode == code);
+        }
     }
 }

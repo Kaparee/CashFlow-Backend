@@ -9,5 +9,6 @@ namespace CashFlow.Application.Repositories
         Task AddAsync(Currency currency);
         Task UpdateAsync(Currency currency);
         Task SaveChangesAsync();
+        Task<Currency?> GetCurrencyByCodeAsync(string code);
     }
 }

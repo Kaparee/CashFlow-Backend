@@ -62,6 +62,7 @@ namespace CashFlow.Application.Services
                     StartDate = limit.StartDate,
                     EndDate = limit.EndDate,
 
+                    CategoryId = limit.CategoryId,
                     CategoryName = limit.Category.Name,
                     CategoryIcon = limit.Category.Icon
                 });

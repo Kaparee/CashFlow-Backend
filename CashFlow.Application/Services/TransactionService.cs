@@ -107,19 +107,19 @@ namespace CashFlow.Application.Services
                             }
 
                             var spentAmount = await _transactionRepository.GetCategorySpendingsAsync(userId, limit.CategoryId, limit.StartDate, limit.EndDate);
-                            spentAmount += (decimal)request.Amount!;
 
                             if (spentAmount > limit.Value)
                             {
-                                await _notificationService.SendNotificationAsync(userId, $"Spending limit exceeded for limit: {limit.Name}", $"You reached your limit for category: {category.Name!} on account: {account.Name}! Your reached {spentAmount}/{limit.Value}", "info");
+                                await _notificationService.SendNotificationAsync(userId, $"Spending limit exceeded for limit: {limit.Name}", $"You reached your limit for category: {category.Name!} on account: {account.Name}! You reached {spentAmount}/{limit.Value}", "info");
                             }
                             else if (spentAmount > (limit.Value * 0.8m))
                             {
-                                await _notificationService.SendNotificationAsync(userId, $"You are close to exceeding the limit for the limit: {limit.Name}", $"You nearly reached your limit for category: {category.Name!} on account: {account.Name}! Your reached {spentAmount}/{limit.Value}", "info");
+                                await _notificationService.SendNotificationAsync(userId, $"You are close to exceeding the limit for the limit: {limit.Name}", $"You nearly reached your limit for category: {category.Name!} on account: {account.Name}! You reached {spentAmount}/{limit.Value}", "info");
                             }
                         }
                     }
                 }
+                await dbTransaction.CommitAsync();
             }
             catch
             {

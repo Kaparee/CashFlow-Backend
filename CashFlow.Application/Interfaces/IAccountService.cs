@@ -9,5 +9,6 @@ namespace CashFlow.Application.Interfaces
         Task CreateNewAccountAsync(int userId, NewAccountRequest request);
         Task DeleteAccountAsync(int userId, int accountId);
         Task UpdateAccountAsync(int userId, UpdateAccountRequest request);
+        Task<decimal> GetTotalBalanceAsync(int userId, string targetCurrency = "PLN");
     }
 }
