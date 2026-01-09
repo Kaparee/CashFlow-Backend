@@ -42,11 +42,6 @@ namespace CashFlow.Application.Services
                     request.CategoryId = await _keyWordRepository.GetCategoryIdByDescriptionAsync(userId, request.Description);
                 }
 
-                if (request.CategoryId == null)
-                {
-                    throw new Exception("CategoryId is required (auto-match failed).");
-                }
-
                 if (request.Amount <= 0 || request.Amount == null)
                 {
                     throw new Exception("Transaction must be greater than 0");
@@ -54,6 +49,10 @@ namespace CashFlow.Application.Services
                 if (request.AccountId == null)
                 {
                     throw new Exception("AccountId is required to create a transaction");
+                }
+                if (request.CategoryId == null)
+                {
+                    throw new Exception("CategoryId is required to create a transaction");
                 }
 
                 var account = await _accountRepository.GetAccountByIdAsync(userId, (int)request.AccountId!);

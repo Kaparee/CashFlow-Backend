@@ -52,7 +52,7 @@ namespace CashFlow.Api.Controllers
                 {
                     return Conflict(new { message = ex.Message });
                 }
-                return StatusCode(500, new { message = "An internal server error occured" });
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 

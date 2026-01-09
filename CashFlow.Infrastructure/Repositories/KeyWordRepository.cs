@@ -24,23 +24,18 @@ namespace CashFlow.Infrastructure.Repositories
 
         public async Task<int?> GetCategoryIdByDescriptionAsync(int userId, string description)
         {
-            if (string.IsNullOrWhiteSpace(description)) return null;
-            var cleanDescription = description.Trim().ToLower();
+            description = description.ToLower();
 
             var allKeyWords = await _context.KeyWords
-                .Where(k => k.UserId == userId && k.DeletedAt == null)
-                .Select(k => new { k.CategoryId, k.Word })
+                .Where(k => k.Category.UserId == userId && k.DeletedAt == null)
                 .ToListAsync();
 
-            var matchedKeyWord = allKeyWords
-                .OrderByDescending(k => k.Word.Length)
-                .FirstOrDefault(k => cleanDescription.Contains(k.Word.Trim().ToLower()));
+            var matchedKeyWord = allKeyWords.FirstOrDefault(k => description.Contains(k.Word.ToLower()));
 
             if (matchedKeyWord != null)
             {
                 return matchedKeyWord.CategoryId;
             }
-
             return null;
         }
 
