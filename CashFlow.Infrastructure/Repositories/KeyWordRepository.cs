@@ -30,7 +30,9 @@ namespace CashFlow.Infrastructure.Repositories
                 .Where(k => k.Category.UserId == userId && k.DeletedAt == null)
                 .ToListAsync();
 
-            var matchedKeyWord = allKeyWords.FirstOrDefault(k => description.Contains(k.Word.ToLower()));
+            var matchedKeyWord = allKeyWords
+                .OrderByDescending(k => k.Word.Length)
+                .FirstOrDefault(k => description.Contains(k.Word.ToLower()));
 
             if (matchedKeyWord != null)
             {

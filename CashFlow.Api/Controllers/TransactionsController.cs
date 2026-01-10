@@ -32,7 +32,7 @@ namespace CashFlow.Api.Controllers
             var transactionDto = await _transactionService.GetAccountTransactionsAsync(CurrentUserId, accountId);
             return Ok(transactionDto);
         }
-
+        
         [HttpPost]
         [Route("create-new-transaction")]
         public async Task<IActionResult> CreateNewTransaction([FromBody] NewTransactionRequest request)
@@ -48,11 +48,11 @@ namespace CashFlow.Api.Controllers
                 {
                     return Conflict(new { message = ex.Message });
                 }
-                if (ex.Message.Contains("is required to"))
+                if(ex.Message.Contains("is required to"))
                 {
                     return Conflict(new { message = ex.Message });
                 }
-                return StatusCode(500, new { message = ex.Message });
+                return StatusCode(500, new { message = "An internal server error occured" });
             }
         }
 
@@ -92,6 +92,22 @@ namespace CashFlow.Api.Controllers
                 }
                 throw;
             }
+        }
+
+        [HttpGet]
+        [Route("category-analytics")]
+        public async Task<ActionResult<List<CategoryAnalyticsResponse>>> GetCategoryAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string type)
+        { 
+                var categoryAnalyticsDto = await _transactionService.GetCategoryAnalyticsAsync(CurrentUserId, startDate, endDate, type);
+                return Ok(categoryAnalyticsDto);
+        }
+
+        [HttpGet]
+        [Route("balance-analytics")]
+        public async Task<ActionResult<List<MonthlyAnalyticsResponse>>> GetBalanceAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            var balanceAnalyticsDto = await _transactionService.GetMonthlyAnalyticsAsync(CurrentUserId, startDate, endDate);
+            return Ok(balanceAnalyticsDto);
         }
     }
 }

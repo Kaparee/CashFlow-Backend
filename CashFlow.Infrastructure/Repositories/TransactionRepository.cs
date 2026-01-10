@@ -66,5 +66,20 @@ namespace CashFlow.Infrastructure.Repositories
                             t.Date >= start && t.Date <= end)
                 .SumAsync(t => t.Amount);
         }
+
+        public async Task<List<Transaction>> GetTransactionsForAnalyticsAsync(int userId, DateTime startDate, DateTime endDate, string type)
+        {
+            return await _context.Transactions
+                .Include(t => t.Category)
+                .Where(t => t.UserId == userId && t.Date >= startDate && t.Date <= endDate && t.DeletedAt == null && t.Type == type)
+                .ToListAsync();
+        }
+
+        public async Task<List<Transaction>> GetTransactionsByDateRangeAsync(int userId, DateTime startDate, DateTime endDate)
+        {
+            return await _context.Transactions
+                .Where(t => t.UserId == userId && t.Date >= startDate && t.Date <= endDate && t.DeletedAt == null)
+                .ToListAsync();
+        }
     }
 }

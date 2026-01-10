@@ -236,5 +236,63 @@ namespace CashFlow.Application.Services
                 throw;
             }
         }
+
+        public async Task<List<CategoryAnalyticsResponse>> GetCategoryAnalyticsAsync(int userId, DateTime startDate, DateTime endDate, string type)
+        {
+            var transactions = await _transactionRepository.GetTransactionsForAnalyticsAsync(userId, startDate, endDate, type);
+
+            if(!transactions.Any())
+            {
+                return new List<CategoryAnalyticsResponse>();
+            }
+
+            decimal amount = 0;
+
+            foreach(var transaction in transactions)
+            {
+                amount += transaction.Amount;
+            }
+
+            var analytics = transactions
+                .GroupBy(t => t.Category)
+                .Select(g => new CategoryAnalyticsResponse
+                {
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.Name,
+                    Color = g.Key.Color ?? "#808080",
+
+                    TotalValue = g.Sum(t => t.Amount),
+
+                    Percentage = Math.Round((g.Sum(t => t.Amount) / amount) * 100, 2)
+                })
+                .OrderByDescending(x => x.TotalValue)
+                .ToList();
+
+            return analytics;
+        }
+
+        public async Task<List<MonthlyAnalyticsResponse>> GetMonthlyAnalyticsAsync(int userId, DateTime startDate, DateTime endDate)
+        {
+            var transactions = await _transactionRepository.GetTransactionsByDateRangeAsync(userId, startDate, endDate);
+
+            if (!transactions.Any())
+            {
+                return new List<MonthlyAnalyticsResponse>();
+            }
+
+            var analytics = transactions
+                .GroupBy(t => new { t.Date.Month, t.Date.Year })
+                .OrderBy(g => g.Key.Year)
+                .ThenBy(g => g.Key.Month)
+                .Select(g => new MonthlyAnalyticsResponse
+                {
+                    MonthNumber = g.Key.Month,
+                    TotalIncomeAmount = g.Where(t => t.Type == "income").Sum(t => t.Amount),
+                    TotalExpenseAmount = g.Where(t => t.Type == "expense").Sum(t => t.Amount),
+                    Balance = g.Where(t => t.Type == "income").Sum(t => t.Amount) - g.Where(t => t.Type == "expense").Sum(t => t.Amount)
+                })
+                .ToList();
+            return analytics;
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace CashFlow.Application.DTO.Responses
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = string.Empty;
         public string? CategoryIcon { get; set; }
+
+        public int AccountId { get; set; }
     }
 }

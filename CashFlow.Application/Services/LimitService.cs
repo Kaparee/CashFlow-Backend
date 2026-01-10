@@ -64,7 +64,9 @@ namespace CashFlow.Application.Services
 
                     CategoryId = limit.CategoryId,
                     CategoryName = limit.Category.Name,
-                    CategoryIcon = limit.Category.Icon
+                    CategoryIcon = limit.Category.Icon,
+
+                    AccountId = limit.AccountId
                 });
             }
             return response;
