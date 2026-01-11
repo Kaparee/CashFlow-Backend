@@ -4,6 +4,7 @@ using CashFlow.Domain.Models;
 using CashFlow.Application.DTO.Requests;
 using CashFlow.Application.DTO.Responses;
 using BCrypt.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace CashFlow.Application.Services
 {
@@ -16,8 +17,9 @@ namespace CashFlow.Application.Services
         private readonly IKeyWordRepository _keyWordRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IConfiguration _configuration;
 
-        public UserService(IUserRepository userRepository, IJWTService jwtService, IEmailService emailService, ICategoryRepository categoryRepository, IKeyWordRepository keyWordRepository, IAccountRepository accountRepository, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository userRepository, IJWTService jwtService, IEmailService emailService, ICategoryRepository categoryRepository, IKeyWordRepository keyWordRepository, IAccountRepository accountRepository, IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
@@ -26,6 +28,7 @@ namespace CashFlow.Application.Services
             _keyWordRepository = keyWordRepository;
             _accountRepository = accountRepository;
             _unitOfWork = unitOfWork;
+            _configuration = configuration;
         }
 
         public async Task RegisterAsync(RegisterRequest request)
@@ -58,7 +61,8 @@ namespace CashFlow.Application.Services
             
 
             await _userRepository.AddAsync(newUser);
-            await _emailService.SendEmailAsync(request.Email!, "Welcome to CashFlow!", $"<h1>Welcome to CashFlow {request.FirstName} {request.LastName}.</h1><br>Please click the link below to activate your account!<br><a href=\"http://localhost:5205/api/verify?verificationToken={userGUID}\">VERIFY HERE</a>");
+            var backendUrl = _configuration["AppUrls:BackendUrl"];
+            await _emailService.SendEmailAsync(request.Email!, "Welcome to CashFlow!", $"<h1>Welcome to CashFlow {request.FirstName} {request.LastName}.</h1><br>Please click the link below to activate your account!<br><a href=\"{backendUrl}/api/verify?verificationToken={userGUID}\">VERIFY HERE</a>");
             await SeedUserDataAsync(newUser.UserId);
         }
 
@@ -277,7 +281,8 @@ namespace CashFlow.Application.Services
             user.ResetTokenExpiresAt = DateTime.UtcNow.AddHours(1);
 
             await _userRepository.UpdateAsync(user);
-            await _emailService.SendEmailAsync(user.Email, "Reset Password - CashFlow", $"<h1>Welcome {user.FirstName} {user.LastName}</h1><br>To reset, click the link below:<br> <a href=\"http://localhost:5173/api/confirm-password-reset?token={resetGUID}\">RESET PASSWORD</a>");
+            var frontendUrl = _configuration["AppUrls:FrontendUrl"];
+            await _emailService.SendEmailAsync(user.Email, "Reset Password - CashFlow", $"<h1>Welcome {user.FirstName} {user.LastName}</h1><br>To reset, click the link below:<br> <a href=\"{frontendUrl}/api/confirm-password-reset?token={resetGUID}\">RESET PASSWORD</a>");
         }
 
         public async Task ResetPasswordConfirmAsync(ResetPasswordRequest request)
@@ -318,8 +323,8 @@ namespace CashFlow.Application.Services
             user.EmailChangeTokenExpiresAt = DateTime.UtcNow.AddHours(1);
 
             await _userRepository.UpdateAsync(user);
-
-            await _emailService.SendEmailAsync(newEmail, "Confirm your new email - CashFlow", $"<h1>Welcome {user.FirstName} {user.LastName}</h1><br>To confirm your new Email, click the link below:<br> <a href=\"http://localhost:5173/api/confirm-email-change?token={token}\">CHANGE EMAIL</a>");
+            var frontendUrl = _configuration["AppUrls:FrontendUrl"];
+            await _emailService.SendEmailAsync(newEmail, "Confirm your new email - CashFlow", $"<h1>Welcome {user.FirstName} {user.LastName}</h1><br>To confirm your new Email, click the link below:<br> <a href=\"{frontendUrl}/api/confirm-email-change?token={token}\">CHANGE EMAIL</a>");
         }
 
         public async Task EmailChangeConfirmAsync(string token)

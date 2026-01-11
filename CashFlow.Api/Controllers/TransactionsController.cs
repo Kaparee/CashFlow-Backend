@@ -109,5 +109,12 @@ namespace CashFlow.Api.Controllers
             var balanceAnalyticsDto = await _transactionService.GetMonthlyAnalyticsAsync(CurrentUserId, startDate, endDate);
             return Ok(balanceAnalyticsDto);
         }
+
+        [HttpGet("daily-analytics")]
+        public async Task<ActionResult<List<DailyAnalyticsResponse>>> GetDailyAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            var result = await _transactionService.GetDailyAnalyticsAsync(CurrentUserId, startDate, endDate);
+            return Ok(result);
+        }
     }
 }

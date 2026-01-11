@@ -11,5 +11,6 @@ namespace CashFlow.Application.Interfaces
         Task UpdateTransactionAsync(int userId, UpdateTransactionRequest request);
         Task<List<CategoryAnalyticsResponse>> GetCategoryAnalyticsAsync(int userId, DateTime startDate, DateTime endDate, string type);
         Task<List<MonthlyAnalyticsResponse>> GetMonthlyAnalyticsAsync(int userId, DateTime startDate, DateTime endDate);
+        Task<List<DailyAnalyticsResponse>> GetDailyAnalyticsAsync(int userId, DateTime startDate, DateTime endDate);
     }
 }

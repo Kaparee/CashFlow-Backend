@@ -56,12 +56,13 @@ namespace CashFlow.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<decimal> GetCategorySpendingsAsync(int userId, int categoryId, DateTime start, DateTime end)
+        public async Task<decimal> GetCategorySpendingsAsync(int userId, int categoryId, int accountId, DateTime start, DateTime end)
         {
             return await _context.Transactions
                 .Where(t => t.UserId == userId &&
                             t.CategoryId == categoryId &&
                             t.Type == "expense" &&
+                            t.AccountId == accountId &&
                             t.DeletedAt == null &&
                             t.Date >= start && t.Date <= end)
                 .SumAsync(t => t.Amount);
@@ -71,6 +72,7 @@ namespace CashFlow.Infrastructure.Repositories
         {
             return await _context.Transactions
                 .Include(t => t.Category)
+                .Include(t => t.Account)
                 .Where(t => t.UserId == userId && t.Date >= startDate && t.Date <= endDate && t.DeletedAt == null && t.Type == type)
                 .ToListAsync();
         }
@@ -78,6 +80,7 @@ namespace CashFlow.Infrastructure.Repositories
         public async Task<List<Transaction>> GetTransactionsByDateRangeAsync(int userId, DateTime startDate, DateTime endDate)
         {
             return await _context.Transactions
+                .Include(t => t.Account)
                 .Where(t => t.UserId == userId && t.Date >= startDate && t.Date <= endDate && t.DeletedAt == null)
                 .ToListAsync();
         }

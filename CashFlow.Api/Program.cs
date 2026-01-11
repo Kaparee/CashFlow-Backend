@@ -116,11 +116,13 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 
+var frontendUrl = builder.Configuration["AppUrls:FrontendUrl"];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(frontendUrl!)
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();

@@ -51,7 +51,7 @@ namespace CashFlow.Application.Services
 
             foreach (var limit in limits)
             {
-                var spent = await _transactionRepository.GetCategorySpendingsAsync(userId, limit.CategoryId, limit.StartDate, limit.EndDate);
+                var spent = await _transactionRepository.GetCategorySpendingsAsync(userId, limit.CategoryId, limit.AccountId, limit.StartDate, limit.EndDate);
 
                 response.Add(new LimitResponse
                 {
