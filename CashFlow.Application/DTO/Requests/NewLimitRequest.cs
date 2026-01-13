@@ -8,5 +8,6 @@ namespace CashFlow.Application.DTO.Requests
         public string? Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public required int AccountId { get; set; }
     }
 }

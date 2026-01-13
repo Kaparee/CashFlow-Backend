@@ -50,6 +50,10 @@ namespace CashFlow.Domain.Models
         [Column("amount")]
         public required decimal Amount { get; set; }
 
+        [Required]
+        [Column("next_payment_date")]
+        public required DateTime NextPaymentDate { get; set; }
+
         [Column("description")]
         public string? Description { get; set; }
 

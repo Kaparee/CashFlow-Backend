@@ -9,8 +9,12 @@ namespace CashFlow.Application.DTO.Responses
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string? Type { get; set; }
+        public DateTime NextPaymentDate { get; set; }
 
-        public int AccountId { get; set; }
-        public int CategoryId { get; set; }
+        public int? AccountId { get; set; }
+        public string? AccountName { get; set; }
+
+        public int? CategoryId { get; set; }
+        public string? CategoryName { get; set; }
     }
 }

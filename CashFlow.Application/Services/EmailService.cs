@@ -45,7 +45,7 @@ namespace CashFlow.Application.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"Nie uda³o siê wys³aæ maila: {ex.Message}");
+                throw new Exception($"Cannot send email: {ex.Message}");
             }
             finally
             {

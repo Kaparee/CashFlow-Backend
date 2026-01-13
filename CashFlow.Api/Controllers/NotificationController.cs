@@ -65,6 +65,25 @@ namespace CashFlow.Api.Controllers
             }
         }
 
+        [HttpPatch]
+        [Route("set-notification-status-read-for-all-unread")]
+        public async Task<IActionResult> SetNotificationStatusReadForAllUnread()
+        {
+            try
+            {
+                await _notificationService.UpdateAllNotificationsAsync(CurrentUserId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("does not exist or"))
+                {
+                    return NotFound(new { message = ex.Message });
+                }
+                return StatusCode(500, new { message = "An internal server error occured" });
+            }
+        }
+
         [HttpDelete]
         [Route("delete-notification")]
         public async Task<IActionResult> DeleteNotification(int notificationId)

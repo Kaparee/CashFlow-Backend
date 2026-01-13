@@ -39,7 +39,8 @@ namespace CashFlow.Application.Services
                 Value = (decimal)request.Value!,
                 Description = request.Description!,
                 StartDate = (DateTime)request.StartDate!,
-                EndDate = (DateTime)request.EndDate!
+                EndDate = (DateTime)request.EndDate!,
+                AccountId = (int)request.AccountId!
             };
             await _limitRepository.AddAsync(newLimit);
         }

@@ -9,5 +9,6 @@ namespace CashFlow.Application.Interfaces
         Task<List<NotificationResponse>> GetUserNotificationsAsync(int userId);
         Task UpdateNotificationAsync(int userId, int notificationId);
         Task DeleteNotificationAsync(int userId, int notificationId);
+        Task UpdateAllNotificationsAsync(int userId);
     }
 }
