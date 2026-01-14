@@ -49,6 +49,44 @@ namespace CashFlow.Api.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("delete-rec-transaction")]
+        public async Task<IActionResult> DeleteRecTransaction(int transactionId, int accountId)
+        {
+            try
+            {
+                await _recTransactionService.DeleteRecTransactionAsync(CurrentUserId, transactionId, accountId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Rec transaction not found"))
+                {
+                    return NotFound();
+                }
+                throw;
+            }
+        }
+
+        [HttpPatch]
+        [Route("update-rec-transaction")]
+        public async Task<IActionResult> UpdateRecTransaction([FromBody] UpdateRecTransactionRequest request)
+        {
+            try
+            {
+                await _recTransactionService.UpdateRecTransactionAsync(CurrentUserId, request);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Rec transaction not found"))
+                {
+                    return NotFound();
+                }
+                throw;
+            }
+        }
+
         [HttpPost("trigger-job")]
         [AllowAnonymous] // Opcjonalnie, ¿ebyœ nie musia³ siê logowaæ do testów joba
         public async Task<IActionResult> TriggerJob()

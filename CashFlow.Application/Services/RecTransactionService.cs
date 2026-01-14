@@ -65,6 +65,7 @@ namespace CashFlow.Application.Services
                 Name = recTransaction.Name,
                 Amount = recTransaction.Amount,
                 Frequency = recTransaction.Frequency,
+                Description = recTransaction.Description,
                 StartDate = recTransaction.StartDate,
                 EndDate = recTransaction.EndDate,
                 Type = recTransaction.Type,
@@ -131,6 +132,62 @@ namespace CashFlow.Application.Services
             }
         }
 
+        public async Task DeleteRecTransactionAsync(int userId, int recTransactionId, int accountId)
+        {
+            using var dbTransaction = await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var recTransaction = await _recTransactionRepository.GetByIdWithDetailsAsync(userId, accountId, recTransactionId);
+
+                if (recTransaction == null)
+                {
+                    throw new Exception("Rec transaction not found or access denied.");
+                }
+
+                recTransaction.DeletedAt = DateTime.UtcNow;
+
+                await _recTransactionRepository.UpdateAsync(recTransaction);
+                await dbTransaction.CommitAsync();
+            }
+            catch
+            {
+                await dbTransaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task UpdateRecTransactionAsync(int userId, UpdateRecTransactionRequest request)
+        {
+            using var dbTransaction = await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var recTransaction = await _recTransactionRepository.GetByIdWithDetailsAsync(userId, request.AccountId, request.RecTransactionId);
+
+                if (recTransaction == null)
+                {
+                    throw new Exception("Rec transaction not found or access denied.");
+                }
+
+                recTransaction.Type = request.NewType;
+                recTransaction.Name = request.NewName;
+                recTransaction.Frequency = request.NewFrequency;
+                recTransaction.IsTrue = request.NewIsTrue;
+                recTransaction.EndDate = request.NewEndDate;
+                recTransaction.CategoryId = request.NewCategoryId;
+                recTransaction.Amount = request.NewAmount;
+                recTransaction.Description = request.NewDescription;
+                recTransaction.NextPaymentDate = request.NewNextPaymentDate;
+
+                await _recTransactionRepository.UpdateAsync(recTransaction);
+                await dbTransaction.CommitAsync();
+            }
+            catch
+            {
+                await dbTransaction.RollbackAsync();
+                throw;
+            }
+}
+
         public async Task ProcessPendingTransactionsAsync()
         {
             var recTransactionsPending = await _recTransactionRepository.GetPendingRecurringTransactionsWithDetailsAsync(DateTime.UtcNow);
@@ -163,12 +220,12 @@ namespace CashFlow.Application.Services
                         await _transactionService.CreateNewTransactionAsync(recTransactionPending.UserId, transactionRequest, false);
 
                         userSummaries[recTransactionPending.UserId].Add($"Added: {recTransactionPending.Name} ({recTransactionPending.Amount})");
-                        //await _notificationService.SendNotificationAsync(recTransactionPending.UserId, "Recurring transaction has been added", $"We have added new transaction automatically based on your recurring transaction to account: {recTransactionPending.Account.Namee}! Reccurring transaction name: {recTransactionPending.Name}", "info");
+                        //await _notificationService.SendNotificationAsync(recTransactionPending.UserId, "Recurring transaction has been added", $"We have added new transaction automatically based on your recurring transaction to account: {recTransactionPending.Account.Name}! Recurring transaction name: {recTransactionPending.Name}", "info");
                     }
                     else if (recTransactionPending.IsTrue == false)
                     {
                         userSummaries[recTransactionPending.UserId].Add($"To add: {recTransactionPending.Name} ({recTransactionPending.Amount})");
-                        //await _notificationService.SendNotificationAsync(recTransactionPending.UserId, $"You have recurring transaction to add", $"Hello, {recTransactionPending.User.FirstName} {recTransactionPending.User.LastName} You have a recurring transaction to add today: {DateTime.UtcNow.Date} in account: {recTransactionPending.Account.Name}. Reccurring transaction name: {recTransactionPending.Name} Remember to add it manually!", "info");
+                        //await _notificationService.SendNotificationAsync(recTransactionPending.UserId, $"You have recurring transaction to add", $"Hello, {recTransactionPending.User.FirstName} {recTransactionPending.User.LastName} You have a recurring transaction to add today: {DateTime.UtcNow.Date} in account: {recTransactionPending.Account.Name}. Recurring transaction name: {recTransactionPending.Name} Remember to add it manually!", "info");
                     }
 
                     recTransactionPending.NextPaymentDate = CalculateNextDate(recTransactionPending.NextPaymentDate, recTransactionPending.Frequency);
@@ -190,7 +247,7 @@ namespace CashFlow.Application.Services
                 var userId = summary.Key;
                 var messages = summary.Value;
 
-                string title = $"Today recurring transaction raport for: ({messages.Count}) transaction/s";
+                string title = $"Today recurring transaction report for: ({messages.Count}) transaction/s";
                 string body = string.Join("\n", messages);
 
                 await _notificationService.SendNotificationAsync(userId, title, $"There is list for recurring transactions on your account" + "\n" + body, "info");
@@ -215,7 +272,7 @@ namespace CashFlow.Application.Services
                 }
 
                 userSummaries[recTransactionUpcoming.UserId].Add($"Tomorrow: {recTransactionUpcoming.Name} ({recTransactionUpcoming.Amount})");
-                //await _notificationService.SendNotificationAsync(recTransactionUpcoming.UserId, "There is upcoming recurring transaction", $"Hello, {recTransactionUpcoming.User.FirstName} {recTransactionUpcoming.User.LastName} There will be a recurring transaction tomorrow for account: {recTransactionUpcoming.Account.Name} Reccurring transaction name: {recTransactionUpcoming.Name}", "info");
+                //await _notificationService.SendNotificationAsync(recTransactionUpcoming.UserId, "There is upcoming recurring transaction", $"Hello, {recTransactionUpcoming.User.FirstName} {recTransactionUpcoming.User.LastName} There will be a recurring transaction tomorrow for account: {recTransactionUpcoming.Account.Name} Recurring transaction name: {recTransactionUpcoming.Name}", "info");
             }
 
             foreach (var summary in userSummaries)
@@ -223,7 +280,7 @@ namespace CashFlow.Application.Services
                 var userId = summary.Key;
                 var messages = summary.Value;
 
-                string title = $"Upcoming recurring transaction raport for: ({messages.Count}) transaction/s";
+                string title = $"Upcoming recurring transaction report for: ({messages.Count}) transaction/s";
                 string body = string.Join("\n", messages);
 
                 await _notificationService.SendNotificationAsync(userId, title, "There is list for upcoming recurring transactions on your account" + "\n" + body, "info");

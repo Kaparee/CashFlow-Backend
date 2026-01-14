@@ -9,6 +9,7 @@ namespace CashFlow.Application.Interfaces
         Task CreateRecTransactionAsync(int userId, NewRecTransactionRequest request);
         Task ProcessPendingTransactionsAsync();
         Task ProcessUpcomingRemindersAsync();
-
+        Task DeleteRecTransactionAsync(int userId, int transactionId, int accountId);
+        Task UpdateRecTransactionAsync(int userId, UpdateRecTransactionRequest request);
     }
 }
